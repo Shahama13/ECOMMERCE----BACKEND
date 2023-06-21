@@ -48,6 +48,10 @@ export const logOutUser = catchAsyncError(async (req, res, next) => {
     res.cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
+        sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+        //for our backend will be at different website and frontend at different website
+        secure: process.env.NODE_ENV === "Development" ? false : true
+        //if sameSite is set to none  then in that case secure should be set to true otherwise cookies will be blocked
     })
 
     res.status(200).json({
